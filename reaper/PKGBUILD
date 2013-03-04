@@ -1,0 +1,59 @@
+# Maintainer: Sairon Istyar <saironiq@gmail.com>
+
+pkgname=cpuminer
+pkgver=20120821-git
+pkgrel=1
+pkgdesc='CPU miner for Litecoin and Bitcoin'
+arch=('i686' 'x86_64')
+url="http://git-annex.branchable.com/"
+license=(GPL3)
+depends=(git util-linux openssh rsync pcre curl glibc gnupg wget findutils \
+	 libyaml libffi zlib libxml2 gmp xz lsof coreutils gsasl)
+provides=(git-annex)
+conflicts=(git-annex)
+
+_file=git-annex-standalone-$pkgver-$CARCH.tar.gz
+if [ "$CARCH" = "i686" ]; then
+  source=($_file::http://downloads.kitenet.net/git-annex/linux/$pkgver/git-annex-standalone-i386.tar.gz)
+  md5sums=('971485f67e04a874992ec29735e5258e')
+elif [ "$CARCH" = "x86_64" ]; then
+  source=($_file::http://downloads.kitenet.net/git-annex/linux/$pkgver/git-annex-standalone-amd64.tar.gz)
+  md5sums=('faf0875824a455684edc35fc17f9f3c2')
+else
+  echo "Unsupported architecture!"
+  exit 1
+fi
+
+build() {
+  cd $srcdir/git-annex.linux
+
+  grep -o 'libpcre.so.3' bin/git-annex
+  if [ $? -eq 0 ] ; then
+    echo "patching libpcre.so in git-annex binary"
+    sed 's/libpcre\.so\.3/libpcre\.so\.1/g' bin/git-annex -i
+  else
+    echo "libpcre patch not needed"
+  fi
+
+  grep -o 'libffi.so.5' bin/git-annex
+  if [ $? -eq 0 ] ; then
+    echo "patching libffi.so in git-annex binary"
+    sed 's/libffi\.so\.5/libffi\.so\.6/g' bin/git-annex -i
+  else
+    echo "libffi patch not needed"
+  fi
+
+  grep -o 'libgnutls.so.26' bin/git-annex
+  if [ $? -eq 0 ] ; then
+    echo "patching libgnutls.so in git-annex binary"
+    sed 's/libgnutls\.so\.26/libgnutls\.so\.28/g' bin/git-annex -i
+  else
+    echo "libgnutls patch not needed"
+  fi
+}
+
+package() {
+  cd $srcdir/git-annex.linux
+  install -Dm755 bin/git-annex "$pkgdir/usr/bin/git-annex"
+  ln -s git-annex "$pkgdir/usr/bin/git-annex-shell"
+}
