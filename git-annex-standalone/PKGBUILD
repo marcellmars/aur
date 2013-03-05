@@ -3,7 +3,7 @@
 pkgname=git-annex-standalone
 pkgver=4.20130227
 pkgrel=1
-pkgdesc='Precompiled version of git-annex, webapp and assistant included.'
+pkgdesc='Standalone precompiled version of git-annex bundled with libs and utils, webapp and assistant included.'
 arch=('i686' 'x86_64')
 url="http://git-annex.branchable.com/"
 license=(GPL3)
