@@ -1,0 +1,2 @@
+#!/bin/sh
+cd /opt/git-annex.linux && ./runshell "$(basename $0)" "$@"
