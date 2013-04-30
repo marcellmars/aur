@@ -1,8 +1,8 @@
 # Maintainer: Sairon Istyar <saironiq@gmail.com>
 
 pkgname=git-annex-bin
-pkgver=4.20130227
-pkgrel=5
+pkgver=4.20130417
+pkgrel=1
 pkgdesc='Precompiled version of git-annex, webapp and assistant included.'
 arch=('i686' 'x86_64')
 url="http://git-annex.branchable.com/"
@@ -12,18 +12,23 @@ conflicts=(git-annex git-annex-standalone)
 
 if [ "$CARCH" = "i686" ] ; then
   depends=(git util-linux openssh rsync curl glibc gnupg wget findutils libyaml \
-  libffi5 zlib libxml2 gmp xz lsof coreutils gsasl gnutls p11-kit libtasn1-3 nettle \
-  libidn libntlm libgnutls26)
+           libffi5 zlib libxml2 gmp xz lsof coreutils gsasl gnutls p11-kit libtasn1-3 nettle \
+           libidn libntlm libgnutls26 krb5 libgcrypt)
+  _file=git-annex-standalone-i386-${pkgver}.tar.gz
+  source=(${_file}::http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-i386.tar.gz)
+  md5sums=('33d4c9b33ad627e67790def837bd1448')
 elif [ "$CARCH" = "x86_64" ] ; then
-  depends=(git util-linux openssh rsync curl gnupg wget findutils xz lsof coreutils \
-  lib32-gnutls lib32-libxml2 lib32-zlib lib32-glibc lib32-gmp lib32-libffi lib32-p11-kit \
-  lib32-libtasn1-3 lib32-nettle lib32-libidn lib32-libyaml lib32-gsasl lib32-libntlm \
-  lib32-libffi5 lib32-libgnutls26)
+  #depends=(git util-linux openssh rsync curl gnupg wget findutils xz lsof coreutils \
+  #         lib32-gnutls lib32-libxml2 lib32-zlib lib32-glibc lib32-gmp lib32-p11-kit \
+  #         lib32-libtasn1-3 lib32-nettle lib32-libidn lib32-libyaml lib32-gsasl lib32-libntlm \
+  #         lib32-libffi5 lib32-libgnutls26 lib32-krb5 lib32-libgcrypt)
+  depends=(git util-linux openssh rsync curl glibc gnupg wget findutils libyaml \
+           libffi5 zlib libxml2 gmp xz lsof coreutils gsasl gnutls p11-kit libtasn1-3 nettle \
+           libidn libntlm libgnutls26 krb5 libgcrypt)
+  _file=git-annex-standalone-amd64-${pkgver}.tar.gz
+  source=(${_file}::http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz)
+  md5sums=('6ade42e0739530b25b8a2fbea8544d72')
 fi
-
-_file=git-annex-standalone-i386-$pkgver.tar.gz
-source=($_file::http://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-i386.tar.gz)
-md5sums=('fc32c5017b0032c37fde9008dc78d976')
 
 package() {
   cd $srcdir/git-annex.linux
