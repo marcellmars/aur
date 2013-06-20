@@ -21,7 +21,7 @@ else
 fi
 
 package() {
-  ar vx $srcdir/libgnutls26_2.12.20-6_${_arch}.deb
+  ar vx $srcdir/libgnutls26_2.12.20-7_${_arch}.deb
   tar xzvf $srcdir/data.tar.gz
   install -Dm755 $srcdir/usr/lib/${_arch2}-linux-gnu/libgnutls.so.26.22.4 $pkgdir/usr/lib/libgnutls.so.26.22.4
   ln -s libgnutls.so.26.22.4 $pkgdir/usr/lib/libgnutls.so.26
